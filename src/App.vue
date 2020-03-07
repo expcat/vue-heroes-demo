@@ -1,29 +1,24 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+  <div>
+    <h1>{{title}}</h1>
+    <Heroes :heroes="heroes" />
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import HelloWorld from './components/HelloWorld.vue';
-
+import { Component, Vue } from "vue-property-decorator";
+import Heroes from "@/components/Heroes.vue";
+import { HEROES } from "@/model/mock-heroes";
+import "@/common/filter";
+import { Hero } from "./model/hero";
 @Component({
-  components: {
-    HelloWorld,
-  },
+  components: { Heroes }
 })
-export default class App extends Vue {}
+export default class App extends Vue {
+  title = "英雄之旅";
+  heroes: Hero[] = HEROES;
+}
 </script>
 
 <style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
 </style>
