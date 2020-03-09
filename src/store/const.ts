@@ -1,0 +1,2 @@
+export const SET_HEROES = 'SET_HEROES';
+export const CHANGE_SELECTED_HERO = 'CHANGE_SELECTED_HERO';

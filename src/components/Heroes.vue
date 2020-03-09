@@ -7,30 +7,33 @@
         v-for="hero in heroes"
         :key="hero.id"
         v-on:click="onSelect(hero)"
-        :class="{ selected: hero === selectedHero }"
+        :class="{ selected: isSelected(hero) }"
       >
-        <span class="badge">{{hero.id}}</span>
-        {{hero.name}}
+        <span class="badge">{{ hero.id }}</span>
+        {{ hero.name }}
       </li>
     </ul>
 
-    <HeroDetail :hero="selectedHero" />
+    <HeroDetail :hero="this.$store.state.selected" />
   </div>
 </template>
 <script lang="ts">
-import Vue from "vue";
-import { Hero } from "@/model/hero";
-import { Prop, Component } from "vue-property-decorator";
-import HeroDetail from "./HeroDetail.vue";
+import Vue from 'vue';
+import { Hero } from '@/model/hero';
+import { Prop, Component } from 'vue-property-decorator';
+import HeroDetail from './HeroDetail.vue';
+import { CHANGE_SELECTED_HERO } from '@/store/const';
 @Component({ components: { HeroDetail } })
 export default class Heroes extends Vue {
   @Prop()
   heroes?: Hero[];
 
-  selectedHero: Hero | null = null;
+  isSelected(hero: Hero): boolean {
+    return this.$store.state.selected === hero;
+  }
 
   onSelect(hero: Hero): void {
-    this.selectedHero = hero;
+    this.$store.commit(CHANGE_SELECTED_HERO, hero);
   }
 }
 </script>
