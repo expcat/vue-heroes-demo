@@ -9,18 +9,18 @@
 import Vue from 'vue';
 import { Component } from 'vue-property-decorator';
 import { NAMESPACE_MESSAGE, CLEAR_MESSAGES } from '@/store/const';
+import { namespace } from 'vuex-class';
+const messagesModule = namespace(NAMESPACE_MESSAGE);
+
 @Component
 export default class Messages extends Vue {
-  get messageLength(): number {
-    return this.$store.getters[NAMESPACE_MESSAGE + 'messageLength'];
-  }
-
-  get messages(): string[] {
-    return this.$store.getters[NAMESPACE_MESSAGE + 'messages'];
-  }
+  @messagesModule.Getter('messageLength') messageLength!: number;
+  @messagesModule.Getter('messages') messages!: string[];
+  @messagesModule.Mutation(CLEAR_MESSAGES)
+  addMessage!: () => void;
 
   clear() {
-    this.$store.commit(NAMESPACE_MESSAGE + CLEAR_MESSAGES);
+    this.addMessage();
   }
 }
 </script>

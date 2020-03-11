@@ -13,6 +13,7 @@
         </div>
       </router-link>
     </div>
+    <HeroSearch />
   </div>
 </template>
 <script lang="ts">
@@ -20,11 +21,13 @@ import Vue from 'vue';
 import { Component } from 'vue-property-decorator';
 import { Hero } from '@/model/hero';
 import { NAMESPACE_HERO } from '@/store/const';
-@Component
+import HeroSearch from './HeroSearch.vue';
+import { namespace } from 'vuex-class';
+const heroesModule = namespace(NAMESPACE_HERO);
+
+@Component({ components: { HeroSearch } })
 export default class Dashboard extends Vue {
-  get heroes(): Hero[] {
-    return this.$store.getters[NAMESPACE_HERO + 'topHeroes'];
-  }
+  @heroesModule.Getter('topHeroes') heroes!: Hero[];
 }
 </script>
 <style lang="scss" scoped>

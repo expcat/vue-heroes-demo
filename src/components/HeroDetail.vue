@@ -24,25 +24,34 @@ import { Component } from 'vue-property-decorator';
 import {
   UPDATE_SELECTED_HERO,
   NAMESPACE_HERO,
-  CHANGE_SELECTED_HERO
+  CHANGE_SELECTED_HERO,
+  NAMESPACE_MESSAGE,
+  ADD_MESSAGE
 } from '@/store/const';
+
+import { namespace } from 'vuex-class';
+
+const heroesModule = namespace(NAMESPACE_HERO);
+const messagesModule = namespace(NAMESPACE_MESSAGE);
 
 @Component
 export default class HeroDetail extends Vue {
-  get hero(): Hero | null {
-    return this.$store.getters[NAMESPACE_HERO + 'selected'];
-  }
+  @heroesModule.Getter('selected') hero!: Hero | null;
+  @heroesModule.Mutation(CHANGE_SELECTED_HERO)
+  changeSelectedHero!: (id: number) => void;
+  @heroesModule.Mutation(UPDATE_SELECTED_HERO)
+  updateSelectedHero!: (newName: string) => void;
+  @messagesModule.Mutation(ADD_MESSAGE)
+  addMessage!: (message: string) => void;
 
   created() {
-    this.$store.commit(
-      NAMESPACE_HERO + CHANGE_SELECTED_HERO,
-      +this.$route.params.id
-    );
+    this.changeSelectedHero(+this.$route.params.id);
+    this.addMessage(`获取英雄 id:${this.$route.params.id}`);
   }
 
   updateHero(event: InputEvent) {
     const input = event.target as HTMLInputElement;
-    this.$store.commit(NAMESPACE_HERO + UPDATE_SELECTED_HERO, input.value);
+    this.updateSelectedHero(input.value);
   }
 }
 </script>

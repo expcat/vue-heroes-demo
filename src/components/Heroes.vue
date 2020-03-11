@@ -10,8 +10,6 @@
         </router-link>
       </li>
     </ul>
-
-    <HeroDetail />
   </div>
 </template>
 <script lang="ts">
@@ -20,12 +18,12 @@ import { Hero } from '@/model/hero';
 import { Component } from 'vue-property-decorator';
 import HeroDetail from './HeroDetail.vue';
 import { NAMESPACE_HERO } from '@/store/const';
+import { namespace } from 'vuex-class';
+const heroesModule = namespace(NAMESPACE_HERO);
 
 @Component({ components: { HeroDetail } })
 export default class Heroes extends Vue {
-  get heroes(): Hero[] {
-    return this.$store.getters[NAMESPACE_HERO + 'heroes'];
-  }
+  @heroesModule.Getter('heroes') heroes!: Hero[];
 }
 </script>
 <style lang="scss" scoped>

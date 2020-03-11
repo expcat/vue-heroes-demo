@@ -22,16 +22,25 @@ import {
   NAMESPACE_MESSAGE
 } from '@/store/const';
 import { HEROES } from '@/model/mock-heroes';
+import { Hero } from './model/hero';
+import { namespace } from 'vuex-class';
+
+const heroesModule = namespace(NAMESPACE_HERO);
+const messagesModule = namespace(NAMESPACE_MESSAGE);
 
 @Component({
   components: { Heroes, Messages }
 })
 export default class App extends Vue {
+  @heroesModule.Mutation(SET_HEROES)
+  setHeroes!: (heroes: Hero[]) => void;
+  @messagesModule.Mutation(ADD_MESSAGE)
+  addMessage!: (message: string) => void;
   title = '英雄之旅';
 
   created() {
-    this.$store.commit(NAMESPACE_HERO + SET_HEROES, HEROES);
-    this.$store.commit(NAMESPACE_MESSAGE + ADD_MESSAGE, '获取英雄');
+    this.setHeroes(HEROES);
+    this.addMessage('获取英雄');
   }
 }
 </script>

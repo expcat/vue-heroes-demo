@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
+import { environment } from '@/environment/environment';
 
 Vue.use(Router);
 
@@ -12,7 +13,7 @@ const HeroDetail = () =>
 
 export default new Router({
   mode: 'history',
-  base: process.env.BASE_URL,
+  base: environment.publicPath,
   routes: [
     {
       path: '/',
