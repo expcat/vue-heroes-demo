@@ -1,8 +1,8 @@
 import { Hero } from '@/model/hero';
 import {
   SET_HEROES,
-  ADD_HEROES,
-  DELETE_HEROES,
+  ADD_HERO,
+  DELETE_HERO,
   CHANGE_SELECTED_HERO,
   UPDATE_SELECTED_HERO
 } from '@/store/const';
@@ -33,10 +33,10 @@ const mutations = {
       state.selected.name = newName;
     }
   },
-  [ADD_HEROES](state: HeroStoreState, hero: Hero): void {
+  [ADD_HERO](state: HeroStoreState, hero: Hero): void {
     state.heroes.push(hero);
   },
-  [DELETE_HEROES](state: HeroStoreState, id: number): void {
+  [DELETE_HERO](state: HeroStoreState, id: number): void {
     const index = state.heroes.findIndex((hero) => hero.id === id);
     if (index > -1) {
       state.heroes.splice(index, 1);
@@ -73,6 +73,12 @@ const actions = {
   },
   searchHeroes(context: {}, name: string): Promise<AxiosResponse<Hero[]>> {
     return axios.get<Hero[]>('/api/heroes/?name=' + name);
+  },
+  updateHero(context: {}, hero: Hero): Promise<AxiosResponse<string>> {
+    return axios.put<string>('/api/heroes', hero);
+  },
+  getHero(context: {}, id: number): Promise<AxiosResponse<Hero>> {
+    return axios.get<Hero>('/api/heroes/' + id);
   }
 };
 

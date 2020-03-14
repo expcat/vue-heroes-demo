@@ -1,38 +1,38 @@
 <template>
   <div id="search-component">
-    <h4><label for="search-box">Hero Search</label></h4>
+    <h4>
+      <label for="search-box">英雄搜索</label>
+    </h4>
 
     <input id="search-box" @input="search" />
 
     <ul class="search-result">
       <li v-for="hero in heroes" :key="hero.id">
-        <router-link :to="'/detail/' + hero.id">
-          {{ hero.name }}
-        </router-link>
+        <router-link :to="'/detail/' + hero.id">{{ hero.name }}</router-link>
       </li>
     </ul>
   </div>
 </template>
 <script lang="ts">
-import Vue from 'vue';
-import { Component } from 'vue-property-decorator';
-import { NAMESPACE_HERO } from '@/store/const';
-import { Hero } from '@/model/hero';
-import _ from 'lodash';
-import { namespace } from 'vuex-class';
-import { AxiosResponse } from 'axios';
+import Vue from "vue";
+import { Component } from "vue-property-decorator";
+import { NAMESPACE_HERO } from "@/store/const";
+import { Hero } from "@/model/hero";
+import _ from "lodash";
+import { namespace } from "vuex-class";
+import { AxiosResponse } from "axios";
 const heroesModule = namespace(NAMESPACE_HERO);
 
 @Component
 export default class HeroSearch extends Vue {
-  @heroesModule.Action('searchHeroes')
+  @heroesModule.Action("searchHeroes")
   searchHeroes!: (name: string) => Promise<AxiosResponse<Hero[]>>;
   heroes: Hero[] = [];
 
   search = _.debounce((event: InputEvent) => {
     const input = event.target as HTMLInputElement;
     if (input.value.length > 0) {
-      this.searchHeroes(input.value).then((res) => {
+      this.searchHeroes(input.value).then(res => {
         if (res.status === 200) {
           this.heroes.splice(0);
           this.heroes.push(...res.data);

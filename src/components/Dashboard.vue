@@ -1,13 +1,8 @@
 <template>
   <div>
-    <h3>Top Heroes</h3>
+    <h3>顶级英雄</h3>
     <div class="grid grid-pad">
-      <router-link
-        v-for="hero in heroes"
-        :key="hero.id"
-        class="col-1-4"
-        :to="'/detail/' + hero.id"
-      >
+      <router-link v-for="hero in heroes" :key="hero.id" class="col-1-4" :to="'/detail/' + hero.id">
         <div class="module hero">
           <h4>{{ hero.name }}</h4>
         </div>
@@ -17,27 +12,41 @@
   </div>
 </template>
 <script lang="ts">
-import Vue from 'vue';
-import { Component } from 'vue-property-decorator';
-import { Hero } from '@/model/hero';
-import { NAMESPACE_HERO } from '@/store/const';
-import HeroSearch from './HeroSearch.vue';
-import { namespace } from 'vuex-class';
+import Vue from "vue";
+import { Component } from "vue-property-decorator";
+import { Hero } from "@/model/hero";
+import { NAMESPACE_HERO, SET_HEROES } from "@/store/const";
+import HeroSearch from "./HeroSearch.vue";
+import { namespace } from "vuex-class";
+import { AxiosResponse } from "axios";
 const heroesModule = namespace(NAMESPACE_HERO);
 
 @Component({ components: { HeroSearch } })
 export default class Dashboard extends Vue {
-  @heroesModule.Getter('topHeroes') heroes!: Hero[];
+  @heroesModule.Getter("topHeroes") heroes!: Hero[];
+  @heroesModule.Action("getHeroes") getHeroes!: () => Promise<
+    AxiosResponse<Hero[]>
+  >;
+  @heroesModule.Mutation(SET_HEROES)
+  setHeroes!: (heroes: Hero[]) => void;
+
+  created() {
+    this.getHeroes().then(res => {
+      if (res.status === 200) {
+        this.setHeroes(res.data);
+      }
+    });
+  }
 }
 </script>
 <style lang="scss" scoped>
 /* DashboardComponent's private CSS styles */
-[class*='col-'] {
+[class*="col-"] {
   float: left;
   padding-right: 20px;
   padding-bottom: 20px;
 }
-[class*='col-']:last-of-type {
+[class*="col-"]:last-of-type {
   padding-right: 0;
 }
 a {
@@ -80,7 +89,7 @@ h4 {
 .grid-pad {
   padding: 10px 0;
 }
-.grid-pad > [class*='col-']:last-of-type {
+.grid-pad > [class*="col-"]:last-of-type {
   padding-right: 20px;
 }
 @media (max-width: 600px) {

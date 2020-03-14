@@ -11,37 +11,16 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import Heroes from '@/components/Heroes.vue';
-import Messages from '@/components/Messages.vue';
-import '@/common/filter';
-import {
-  SET_HEROES,
-  ADD_MESSAGE,
-  NAMESPACE_HERO,
-  NAMESPACE_MESSAGE
-} from '@/store/const';
-import { HEROES } from '@/model/mock-heroes';
-import { Hero } from './model/hero';
-import { namespace } from 'vuex-class';
-
-const heroesModule = namespace(NAMESPACE_HERO);
-const messagesModule = namespace(NAMESPACE_MESSAGE);
+import { Component, Vue } from "vue-property-decorator";
+import Heroes from "@/components/Heroes.vue";
+import Messages from "@/components/Messages.vue";
+import "@/common/filter";
 
 @Component({
   components: { Heroes, Messages }
 })
 export default class App extends Vue {
-  @heroesModule.Mutation(SET_HEROES)
-  setHeroes!: (heroes: Hero[]) => void;
-  @messagesModule.Mutation(ADD_MESSAGE)
-  addMessage!: (message: string) => void;
-  title = '英雄之旅';
-
-  created() {
-    this.setHeroes(HEROES);
-    this.addMessage('获取英雄');
-  }
+  title = "英雄之旅";
 }
 </script>
 

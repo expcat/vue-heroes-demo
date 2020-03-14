@@ -1,8 +1,8 @@
 // Heroes
 export const NAMESPACE_HERO = 'heroes';
 export const SET_HEROES = 'SET_HEROES';
-export const ADD_HEROES = 'ADD_HEROES';
-export const DELETE_HEROES = 'DELETE_HEROES';
+export const ADD_HERO = 'ADD_HERO';
+export const DELETE_HERO = 'DELETE_HERO';
 export const CHANGE_SELECTED_HERO = 'CHANGE_SELECTED_HERO';
 export const UPDATE_SELECTED_HERO = 'UPDATE_SELECTED_HERO';
 // Messages
